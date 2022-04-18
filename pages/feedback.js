@@ -1,11 +1,24 @@
 import { buildFilePath, extractData } from './api/feedback';
+import { useState } from 'react';
+
 
 function Feedback(props) {
+
+  const [feedbackData, setFeedBackData] = useState();
+
+  function loadFeedBackHandler(id) {
+    fetch(`/api/${id}`)
+    .then(response => response.json())
+    .then(data => setFeedBackData(data.feedback))
+
+
+  }
   return (
     <ul>
       {props.feedBackItems.map((item) => {
        return <li key={item.id}>{item.feedback}
-       <button>Show details</button>
+       <button onClick={loadFeedBackHandler.bind(null, item.id)}>Show details</button>
+       {feedbackData && <p>{feedbackData.email}</p>}
        </li>
       })}
     </ul>
