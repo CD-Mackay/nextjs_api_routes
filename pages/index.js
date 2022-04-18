@@ -1,10 +1,11 @@
 import { emitDeprecationWarning } from 'mongodb/lib/utils';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 
 
 function HomePage() {
   const emailInput = useRef();
   const feedbackInput = useRef();
+  const [showComments, setShowComments] = useState([]);
 
   function handleFormSubmit(event) {
     event.preventDefault();
@@ -20,6 +21,14 @@ function HomePage() {
       }
     }).then(response => response.json())
     .then((data) => console.log(data));
+  };
+
+  function handleLoadFeedback() {
+    fetch('/api/feedback')
+    .then(response => response.json())
+    .then((data) => {
+      setShowComments(data.feedback);
+    })
   }
 
   return (
@@ -36,6 +45,13 @@ function HomePage() {
         </div>
         <button>send feedback</button>
       </form>
+      <hr />
+      <button onClick={handleLoadFeedback}>Get Feedback</button>
+      <ul>
+        {showComments.map((element) => {
+          return <li key={element.id}>{element.feedback}</li>
+        })}
+      </ul>
     </div>
   );
 }
