@@ -5,7 +5,7 @@ function Feedback(props) {
   const [feedbackData, setFeedBackData] = useState();
 
   function loadFeedBackHandler(id) {
-    fetch(`/api/${id}`)
+    fetch(`/api/feedback/${id}`)
       .then((response) => response.json())
       .then((data) => setFeedBackData(data.feedback));
   }
